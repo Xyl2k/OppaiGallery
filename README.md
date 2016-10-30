@@ -6,6 +6,10 @@ OppaiGallery *v0.5*
 It display latests media added, support search, tags, random feature and have also a mini admin panel.
 Just put it on a NAS or a raspberry pi with local web server feature.
 
+
+```gallery.php``` and ```admin.php``` can be renamed it will not broke it.
+
+
 > **SQL Procedures**: 
 > SQL DB include 4 procedures and need 5 tables, sql procedures can be called like this:
 >
