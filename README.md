@@ -4,6 +4,7 @@ OppaiGallery *v0.5*
 =========
 « OppaiGallery » is a offline (not designed for online usage) library manager for R18 Japanese pornography artworks.
 It display latests media added, support search, tags, random feature and have also a mini admin panel.
+Just put it on a NAS or a raspberry pi with local web server feature.
 
 > **SQL Procedures**: 
 > SQL DB include 4 procedures and need 5 tables, sql procedures can be called like this:
@@ -13,4 +14,4 @@ It display latests media added, support search, tags, random feature and have al
 >```  CALL random_medias(3); ```
 >```  CALL tags_count(); ```
 
-Can be reused to make a music library, youtube videos or whatever...
+Can be reused to make a music library links db (soundcloud, mixcloud, etc..), youtube videos library, or whatever you think it can be re-used for...
