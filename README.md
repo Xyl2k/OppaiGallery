@@ -12,3 +12,5 @@ It display latests media added, support search, tags, random feature and have al
 >```  CALL medias_by_tag('your tag'); ```
 >```  CALL random_medias(3); ```
 >```  CALL tags_count(); ```
+
+Can be reused to make a music library, youtube videos or whatever...
