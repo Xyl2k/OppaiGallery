@@ -2,12 +2,14 @@
 
 OppaiGallery *v0.5*
 =========
-« OppaiGallery » is a offline (not designed for online usage) library manager for R18 Japanese pornography artworks.
+« OppaiGallery » is a offline (not designed for online usage) links library manager for R18 Japanese pornography artworks.
+Sort of bookmarks for your coups de coeurs. (A "coup de coeur" it's like when you see a tv series/read a book/play a game/etc. for the first time and you really like it even if it's not the best series/book/game/etc. you have seen...)
+
+
 It display latests media added, support search, tags, random feature and have also a mini admin panel.
 Just put it on a NAS or a raspberry pi with local web server feature.
 
-
-```gallery.php``` and ```admin.php``` can be renamed it will not broke it.
+```gallery.php``` and ```admin.php``` can be renamed, it will not broke it.
 
 
 > **SQL Procedures**: 
