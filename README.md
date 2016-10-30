@@ -13,7 +13,7 @@ Just put it on a NAS or a raspberry pi with local web server feature.
 
 
 > **SQL Procedures**: 
-> SQL DB include 4 procedures and need 5 tables, sql procedures can be called like this:
+> SQL dump include 4 procedures need 5 tables and have already 7 categories pre-defined (Pictures/Photo/JAV/Anime/Manga/Doujinshi/Games), sql procedures can be called like this:
 >
 >```  CALL latest_medias(3); ```
 >```  CALL medias_by_tag('your tag'); ```
