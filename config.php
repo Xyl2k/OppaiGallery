@@ -15,7 +15,7 @@
 	
 	// footer notes
 	$AppName = "OppaiGallery";
-	$AppVersion = "0.5";
+	$AppVersion = "0.6";
 	
 	// Script parameters
 	$DisplayLatestMedias = "20";

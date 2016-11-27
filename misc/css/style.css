@@ -13,6 +13,7 @@ html, body {
   height: 100%;
 }
 
+/************ Categories images ***************/
 .icon {
     display: block;
     padding-left: 80px;
@@ -221,6 +222,38 @@ input[type="text"]:invalid, input[type="password"]:invalid {
   display: flex;
   align-items: center;
 
+}
+
+/************ Used for the FAQ ***************/
+
+ul li {
+	margin: 0 0 0 10px;
+}
+
+strong.important_text {
+  color: red;
+  font-weight: bold;
+}
+
+strong.important_text_alt {
+  color: green;
+  font-weight: bold;
+}
+
+/************ CSS hack to don't use javascript ***************/
+.collapse {
+  cursor: pointer;
+  display: block;
+  text-decoration: underline;
+}
+.collapse + input {
+  display: none;
+}
+.collapse + input + div {
+  display: none;
+}
+.collapse + input:checked + div {
+  display: block;
 }
 
 /********************** container ***************************/
