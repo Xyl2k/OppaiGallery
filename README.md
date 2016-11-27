@@ -1,6 +1,6 @@
 ![oppaigallery](https://cloud.githubusercontent.com/assets/8536299/19834013/e1c40426-9e4e-11e6-9bc1-330371a97092.png)
 
-OppaiGallery *v0.5*
+OppaiGallery *v0.6*
 =========
 « OppaiGallery » is a offline (not designed for online usage, admin.php is not authentication protected) links library manager for R18 Japanese pornography artworks.
 Sort of bookmarks for your coups de coeurs. (A "coup de coeur" it's like when you see a tv series/read a book/play a game/etc. for the first time and you really like it even if it's not the best series/book/game/etc. you have seen...)
