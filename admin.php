@@ -215,7 +215,7 @@ There are many terms used in these FAQ that are generally poorly defined. For th
 <li><b>Eroge</b> - Short for "erotic game". Basically, pornographic games. Used exclusively to describe games of Japanese origin. Also referred to as h-games.</li>
 <li><b>Hentai</b> - A subgenre of anime, manga, and games characterized by being pornographic.</li>
 <li><b>Nakadashi</b> - Cumming inside the pussy, in Japanese.</li>
-<li><b>Futanary</b> - Someone(Usually in a doujinshi, but occasionally in normal fanfics or hentai), who appears to be female, but for some reason has male genatalia.</li>
+<li><b>Futanari</b> - Someone(Usually in a doujinshi, but occasionally in normal fanfics or hentai), who appears to be female, but for some reason has male genatalia.</li>
 <li><b>Netorare</b> - Literally means "cuckold" and shortened as NTR.</li>
 <li><b>Shotacon</b> - A pairing, seen mostly as yaoi in fanfiction/art, in which there is a young underaged male engaged in a sexual act.</li>
 <li><b>CG</b> - Computer Graphics.</li>
