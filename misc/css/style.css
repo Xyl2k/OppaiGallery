@@ -240,19 +240,64 @@ strong.important_text_alt {
   font-weight: bold;
 }
 
+
+
+/************ CSS for the admin tag list  ***************/
+.typeahead,
+.tt-query,
+
+.typeahead {
+  background-color: #fff;
+}
+
+.typeahead:focus {
+  border: 2px solid #0097cf;
+}
+
+.tt-hint {
+  color: #999
+}
+
+.tt-dropdown-menu {
+  width: 150px;
+  margin-top: 12px;
+  padding: 0px 0;
+  background-color: #fff;
+  border: 1px solid #ccc;
+  border: 1px solid rgba(0, 0, 0, 0.2);
+  -webkit-border-radius: 8px;
+     -moz-border-radius: 8px;
+          border-radius: 8px;
+  -webkit-box-shadow: 0 5px 10px rgba(0,0,0,.2);
+     -moz-box-shadow: 0 5px 10px rgba(0,0,0,.2);
+          box-shadow: 0 5px 10px rgba(0,0,0,.2);
+}
+
+.tt-suggestion.tt-cursor {
+  color: #fff;
+  background-color: #0097cf;
+}
+
+.tt-suggestion p {
+  margin: 0;
+}
+tt-highlight{
+	color:red;
+}
+
 /************ CSS hack to don't use javascript ***************/
-.collapse {
+.collapsetags {
   cursor: pointer;
   display: block;
   text-decoration: underline;
 }
-.collapse + input {
+.collapsetags + input {
   display: none;
 }
-.collapse + input + div {
+.collapsetags + input + div {
   display: none;
 }
-.collapse + input:checked + div {
+.collapsetags + input:checked + div {
   display: block;
 }
 

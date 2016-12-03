@@ -7,8 +7,10 @@ $mediaTableDisplay = "1";
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-15">
     <title><?php echo($AppName); ?> - Mini admin</title>
-    <link type='text/css' rel='stylesheet' href='misc/css/style.css' />
-	<script src="misc/js/jquery-1.7.2.min.js"></script>
+	<script src="misc/js/jquery.js"></script>
+	<script src="misc/js/typeahead.bundle.js"></script>
+	<script src="misc/js/bloodhound.js"></script>
+	<link href='misc/css/style.css' rel='stylesheet' type='text/css' />
     <style>
         #content {
 <?php
@@ -23,7 +25,7 @@ $mediaTableDisplay = "1";
 		echo '            background-image: url(\'' . $the_image . '\');';
 ?>
         }
-    </style>
+</style>
 
 <script language="JavaScript" type="text/javascript">
 $(document).ready(function(){
@@ -45,6 +47,42 @@ $(document).ready(function(){
         return true;
     });
 });
+
+var tags_list = [
+					<?php
+					$ret = mysqli_query($mysql, 'SELECT * FROM tags where 1');
+// Récupère un tableau associatif 
+    while ($datas = mysqli_fetch_assoc($ret)) {
+?>
+                "<?php echo(htmlentities($datas['tag_name'])); ?>", 
+<?php
+	}
+	// Libération des résultats 
+    mysqli_free_result($ret);
+?>
+];
+
+$(document).ready(function() {
+// constructs the suggestion engine
+var my_Suggestion_class = new Bloodhound({
+  datumTokenizer: Bloodhound.tokenizers.obj.whitespace('value'),
+  queryTokenizer: Bloodhound.tokenizers.whitespace,
+  limit:4,
+  local: $.map(tags_list, function(filtered_items) { return { value: filtered_items }; })
+});
+
+// kicks off the loading/processing of `local` and `prefetch`
+my_Suggestion_class.initialize();
+var typeahead_elem = $('.typeahead');
+	typeahead_elem.typeahead({
+	  hint: true,
+	  highlight: true,
+	  minLength: 1
+	},
+	{
+		 source: my_Suggestion_class.ttAdapter()
+	});
+});
 </script>
 	
 </head>
@@ -63,12 +101,13 @@ $(document).ready(function(){
 							<li><a href="<?php echo htmlentities($_SERVER['PHP_SELF']);?>?mediatags">[&#x2605; Tag a link &#x2605;]</a></li>
 							<li><a href="<?php echo htmlentities($_SERVER['PHP_SELF']);?>?faq">[&#x2605; FAQ &#x2605;]</a></li>
 							<li><a href="<?php echo htmlentities($_SERVER['PHP_SELF']);?>?users">[&#x2605; Users &#x2605;]</a></li>
-                        </ul>
+						</ul>
                     </div>
                 </caption>
             </table>
 			
 <?php
+
 /* page : admin.php?add
 Ajout de media */
 $errors = '';
@@ -135,9 +174,8 @@ $errors = '';
 					</select><br /><br />
 					<label for="USER">USER: </label>
 					<select name="userid" size="1">
-					<option selected value="1">UID: 1</option>
 					<?php
-						$ret = mysqli_query($mysql, 'SELECT * FROM users ORDER BY user_id DESC');
+						$ret = mysqli_query($mysql, 'SELECT * FROM users ORDER BY user_id');
 							    /* Récupère un tableau associatif */
 								while ($datas = mysqli_fetch_assoc($ret)) {
 					?>
@@ -373,16 +411,28 @@ $mediaTableDisplay = "0"; // Dirty hack pour ne pas afficher le tableau des medi
 
 								if($checkrows>0) {
 								$errors .= "\n <br /><table width=\"776\" border=\"0\"><tr><td><center><b><font color='red'>Dupecheck: " . htmlentities($_POST['selectedtag']) . " </font></b></center></td></tr><tr><td><center><b><font color='red'>Already on DB !</font></b></center></td></tr></table>";
-
 								}
 								
 								if(!empty($errors)){
 									echo nl2br($errors);
-										}
-			
+								}
+										
+								$check = mysqli_query($mysql, "SELECT tag_name FROM tags WHERE tag_name='" . mysqli_real_escape_string($mysql, $_POST['selectedtag']) ."'");
+									if (!$check){
+									echo("<br /><table width=\"776\" border=\"0\"><tr><td><center><b><font color='red'>SQL Error.</font></b></center></td></tr></table><br />");
+									die;
+								}
+									
+								$checkrows = mysqli_num_rows($check);
+								if($checkrows<1) {
+									$errors .= "\n <br /><table width=\"776\" border=\"0\"><tr><td><center><b><font color='red'>Not in tags db: " . htmlentities($_POST['selectedtag']) . " Add it first !</font></b></center></td></tr></table>";
+									echo nl2br($errors);
+								}
+										
 								if(empty($errors))
 									{
-										$ret = mysqli_query($mysql, "INSERT INTO medias_tags VALUES('". mysqli_real_escape_string($mysql, $id) ."', '". mysqli_real_escape_string($mysql, $_POST['selectedtag']) ."')") or die(mysql_error());
+										
+										$ret = mysqli_query($mysql, "INSERT INTO medias_tags VALUES('". mysqli_real_escape_string($mysql, $id) ."', '". mysqli_real_escape_string($mysql, $_POST['selectedtag']) ."')") or die(mysqli_error($mysql));
 										echo "<br /><table width=\"776\" border=\"0\"><tr><td><center><font color=\"#D878C6\"><h3 style=\"text-align:center;\">" . htmlentities($_POST['selectedtag']) . "</h3></font></center></td></tr>";
                                         echo ('<tr><td><center><b><font color="#AD1888">SUCCESS <script type="text/javascript">$(document).ready(function(){$(".redir a").click(function(){window.location.href="' . htmlentities($_SERVER['PHP_SELF']) . '?mediatags";});var interval_redir = setInterval(function(){var remaining = parseInt($(".redir span").text(), 10)-1;if(remaining<=0){window.location.href="' . htmlentities($_SERVER['PHP_SELF']) . '?mediatags";clearInterval("interval_redir");}else{$(".redir span").text(remaining);}}, 1000);});</script><div class="redir">You will be redirected in <span>' . $Redirect . '</span> second(s).<br /><a>Or click here</a></div></font></b></center></td></tr></table><br />');
 									}
@@ -417,7 +467,7 @@ $mediaTableDisplay = "0"; // Dirty hack pour ne pas afficher le tableau des medi
 			if(empty($errors))
 				{
 					if (!empty($tag)) {
-							mysqli_query($mysql, "INSERT INTO tags VALUES('".$tag."')") or die(mysql_error());
+							mysqli_query($mysql, "INSERT INTO tags VALUES('".$tag."')") or die(mysqli_error($mysql));
 							echo "<table width=\"776\" border=\"0\"><tr><td><center><font color=\"#D878C6\"><h3 style=\"text-align:center;\">" . htmlentities($tag) . "</h3></font></center></td></tr>";
 							echo ('<tr><td><center><b><font color="#AD1888">SUCCESS <script type="text/javascript">$(document).ready(function(){$(".redir a").click(function(){window.location.href="' . htmlentities($_SERVER['PHP_SELF']) . '?mediatags";});var interval_redir = setInterval(function(){var remaining = parseInt($(".redir span").text(), 10)-1;if(remaining<=0){window.location.href="' . htmlentities($_SERVER['PHP_SELF']) . '?mediatags";clearInterval("interval_redir");}else{$(".redir span").text(remaining);}}, 1000);});</script><div class="redir">You will be redirected in <span>' . $Redirect . '</span> second(s).<br /><a>Or click here</a></div></font></b></center></td></tr></table><br />');
 						}
@@ -471,24 +521,12 @@ else if (isset($_GET['word']) && !empty($_GET['word']))
     mysqli_free_result($ret);
 ?>
 					</select>
-				<select name="selectedtag" size="1"><br />
-					<?php
-					$ret = mysqli_query($mysql, 'SELECT * FROM tags where 1');
-/* Récupère un tableau associatif */
-    while ($datas = mysqli_fetch_assoc($ret)) {
-?>
-                <option value="<?php echo(htmlentities($datas['tag_name'])); ?>"><?php echo(htmlentities($datas['tag_name'])); ?></option>
-<?php
-	}
-	/* Libération des résultats */
-    mysqli_free_result($ret);
-?>
-					</select>
+
+					<input id="tag" type="text" autocomplete="off" maxlength="16" class="typeahead" placeholder="tag" name="selectedtag" >
 					<input  class="bouton" type="submit" value="Add"><br/>
 					</p>
 					</form></center><br />
-					
-<label class="collapse" for="tagshow">[CLICK HERE TO DISPLAY THE LIST OF TAGS]</label>
+<label class="collapsetags" for="tagshow">[CLICK HERE TO DISPLAY THE LIST OF TAGS]</label>
 <input id="tagshow" type="checkbox">
 <div>
 		  <table>
@@ -496,7 +534,7 @@ else if (isset($_GET['word']) && !empty($_GET['word']))
                     <td width="776">Click on any tag to remove it from the database.</td>
                 </tr>
 				<tr>
-                    <td><div class="tag-container field-name ">
+                    <td><div class="tag-container field-name">
 <?php 
 /* Récupère un tableau associatif */
 $ret = mysqli_query($mysql, 'SELECT * FROM tags');	
@@ -585,7 +623,7 @@ Edition de media */
 					$mediaurl = mysqli_real_escape_string($mysql, $_POST['mediaurl']);
 					$mediatypeshortname = mysqli_real_escape_string($mysql, $_POST['mediatypeshortname']);
 					$insanitycheck = mysqli_real_escape_string($mysql, $_POST['insane']);
-					mysqli_query($mysql, "UPDATE medias SET media_title='".$mediatitle."', media_comment='".$mediacomment."', media_url='".$mediaurl."', media_type_short_name='".$mediatypeshortname."', insane='".$insanitycheck."'  WHERE media_id='".$id."'") or die(mysql_error());
+					mysqli_query($mysql, "UPDATE medias SET media_title='".$mediatitle."', media_comment='".$mediacomment."', media_url='".$mediaurl."', media_type_short_name='".$mediatypeshortname."', insane='".$insanitycheck."'  WHERE media_id='".$id."'") or die(mysqli_error($mysql));
 					echo "<table width=\"776\" border=\"0\"><tr><td><center><font color=\"#D878C6\"><h3 style=\"text-align:center;\">" . htmlentities($mediatitle) . "</h3></font></center></td></tr>";
 					echo ('<tr><td><center><b><font color="#AD1888">SUCCESS <script type="text/javascript">$(document).ready(function(){$(".redir a").click(function(){window.location.href="' . htmlentities($_SERVER['PHP_SELF']) . '";});var interval_redir = setInterval(function(){var remaining = parseInt($(".redir span").text(), 10)-1;if(remaining<=0){window.location.href="' . htmlentities($_SERVER['PHP_SELF']) . '";clearInterval("interval_redir");}else{$(".redir span").text(remaining);}}, 1000);});</script><div class="redir">You will be redirected in <span>' . $Redirect . '</span> second(s).<br /><a>Or click here</a></div></font></b></center></td></tr></table><br />');
 					

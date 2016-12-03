@@ -10,7 +10,7 @@ require_once('config.php');
     <meta name="description" content="pr0n">
     <meta name="keywords" content="pr0n">
     <link type='text/css' rel='stylesheet' href='misc/css/style.css' />
-	<script src="misc/js/jquery-1.7.2.min.js"></script>
+	<script src="misc/js/jquery.js"></script>
     <style>
         #content {
 <?php
